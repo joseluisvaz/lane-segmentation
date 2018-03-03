@@ -107,3 +107,6 @@ ENV/
 # pyc
 *.pyc
 
+# Idea Things
+.idea/
+

@@ -8,7 +8,7 @@ from regionCutter import RegionCutter
 
 pwd = os.getcwd()
 
-img = cv2.imread(pwd + "/data/training/image_2/um_000066.png", 0)
+img = cv2.imread(pwd + "/example_image.png", flags=cv2.IMREAD_COLOR)
 
 # Initializes Region Cutter and sets its variables
 region_cutter = RegionCutter()

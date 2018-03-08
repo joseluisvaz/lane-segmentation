@@ -17,8 +17,8 @@ region_cutter.set_vertices()
 img_cropped = region_cutter.cut_region(img)
 img_cropped_gray = cv2.cvtColor(img_cropped, cv2.COLOR_RGB2GRAY)
 
-gradx = abs_sobel_tresh(img_cropped_gray, orientation="x", kernel_size=7, thresh=(10,255))
-grady = abs_sobel_tresh(img_cropped_gray, orientation="y", kernel_size=7, thresh=(60,255))
+gradx = abs_sobel_tresh(img_cropped_gray, orientation="x", kernel_size=7, thresh=(10, 255))
+grady = abs_sobel_tresh(img_cropped_gray, orientation="y", kernel_size=7, thresh=(60, 255))
 
 cv2.imshow("gradient in x", gradx[1])
 cv2.imshow("gradient in y", grady[1])

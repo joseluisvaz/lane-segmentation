@@ -1,10 +1,9 @@
 import os
 
 import cv2
-import numpy as np
 
-import utils
-from regionCutter import RegionCutter
+from utils.img_functions import abs_sobel_tresh
+from utils.region_cutter import RegionCutter
 
 pwd = os.getcwd()
 
@@ -15,8 +14,13 @@ region_cutter = RegionCutter()
 region_cutter.set_img_shape(img.shape)
 region_cutter.set_vertices()
 
-cropped_img = region_cutter.cut_region(img)
+img_cropped = region_cutter.cut_region(img)
+img_cropped_gray = cv2.cvtColor(img_cropped, cv2.COLOR_RGB2GRAY)
 
-cv2.imshow("cropped_image", cropped_img)
+gradx = abs_sobel_tresh(img_cropped_gray, orientation="x", kernel_size=7, thresh=(10, 255))
+grady = abs_sobel_tresh(img_cropped_gray, orientation="y", kernel_size=7, thresh=(60, 255))
+
+cv2.imshow("gradient in x", gradx[1])
+cv2.imshow("gradient in y", grady[1])
 cv2.waitKey(0)
 cv2.destroyAllWindows()

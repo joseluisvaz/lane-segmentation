@@ -14,14 +14,14 @@ pwd = os.getcwd()
 
 img = cv2.imread(pwd + "/example_image2.jpg", flags=cv2.IMREAD_COLOR)
 
-# Initializes Region Cutter and sets its variables
-region_cutter = RegionCutter()
-region_cutter.set_img_shape(img.shape)
-region_cutter.set_vertices()
-
 img_gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 img_hsl = cv2.cvtColor(img, cv2.COLOR_RGB2HLS)
 s_channel = img_hsl[:, :, 2]
+
+# Initializes Region Cutter and sets its variables
+region_cutter = RegionCutter()
+region_cutter.set_img_shape(img_gray.shape)
+region_cutter.set_vertices()
 
 grad_x = component_sobel_tresh(img_gray, orientation="x", kernel_size=KERNEL_SIZE, thresh=(10, 255))
 grad_y = component_sobel_tresh(img_gray, orientation="y", kernel_size=KERNEL_SIZE, thresh=(60, 255))

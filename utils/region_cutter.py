@@ -34,12 +34,15 @@ class RegionCutter(object):
 
     def cut_region(self, img):
         if self.shape is None:
+            print("Shape is None Error")
             raise ValueError
 
         if self.shape != img.shape:
+            print("Shape != img.shape Error")
             raise ValueError
 
         if self.vertices is None:
+            print("vertices is None Error")
             raise ValueError
 
         mask = np.zeros_like(img)

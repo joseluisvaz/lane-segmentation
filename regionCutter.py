@@ -1,7 +1,8 @@
 import cv2
 import numpy as np
 
-import utils
+from utils.img_functions import fill_poly
+
 
 class RegionCutter(object):
 
@@ -27,8 +28,8 @@ class RegionCutter(object):
         inner_right_bottom = (1000, self.shape[0])
         inner_apex1 = (610,355)
         inner_apex2 = (680,355)
-        self.vertices = np.array([[left_bottom, apex1, apex2, \
-                                 right_bottom, inner_right_bottom, \
+        self.vertices = np.array([[left_bottom, apex1, apex2,
+                                 right_bottom, inner_right_bottom,
                                  inner_apex1, inner_apex2, inner_left_bottom]], 
                                  dtype=np.int32)
         
@@ -44,6 +45,6 @@ class RegionCutter(object):
         
         mask = np.zeros_like(img)
         
-        utils.fillPoly(mask, self.vertices)
+        fill_poly(mask, self.vertices)
 
         return cv2.bitwise_and(img, mask) 

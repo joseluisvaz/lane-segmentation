@@ -14,7 +14,10 @@ def component_sobel_tresh(img_grayscale, orientation="x", kernel_size=3, thresh=
     img_sobel = np.absolute(img_sobel)
     img_sobel_scaled = np.uint8(255*img_sobel/np.max(img_sobel))
 
-    return cv2.threshold(img_sobel_scaled, thresh[0], thresh[1], cv2.THRESH_BINARY)
+    binary_output = cv2.inRange(img_sobel_scaled, thresh[0], thresh[1])
+    binary_output[binary_output == 255] = 1
+
+    return binary_output
 
 
 def magnitude_sobel_thresh(img_grayscale, kernel_size=3, thresh=(0,255)):
@@ -25,7 +28,10 @@ def magnitude_sobel_thresh(img_grayscale, kernel_size=3, thresh=(0,255)):
     gradient_mag = np.sqrt(grad_x**2 + grad_y**2)
     gradient_mag_scaled = np.uint8(255*gradient_mag / np.max(gradient_mag))
 
-    return cv2.threshold(gradient_mag_scaled, thresh[0], thresh[1], cv2.THRESH_BINARY)
+    binary_output = cv2.inRange(gradient_mag_scaled, thresh[0], thresh[1])
+    binary_output[binary_output == 255] = 1
+
+    return binary_output
 
 
 def direction_sobel_thresh(img_grayscale, kernel_size=3, thresh=(0, np.pi/2)):
@@ -34,10 +40,12 @@ def direction_sobel_thresh(img_grayscale, kernel_size=3, thresh=(0, np.pi/2)):
     grad_y = cv2.Sobel(img_grayscale, cv2.CV_64F, 0, 1, ksize=kernel_size)
 
     # To ignore division and invalid errors
-
     with np.errstate(divide="ignore", invalid="ignore"):
         gradient_abs_direction = np.absolute(np.arctan(grad_y/grad_x))
-        return cv2.threshold(gradient_abs_direction, thresh[0], thresh[1], cv2.THRESH_BINARY)
+        binary_output = cv2.inRange(gradient_abs_direction, thresh[0], thresh[1])
+        binary_output[binary_output == 255] = 1
+
+    return binary_output
 
 
 def fill_poly(mask, vertices):

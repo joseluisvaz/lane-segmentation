@@ -19,15 +19,14 @@ region_cutter = RegionCutter()
 region_cutter.set_img_shape(img.shape)
 region_cutter.set_vertices()
 
-img_cropped = region_cutter.cut_region(img)
-img_cropped_gray = cv2.cvtColor(img_cropped, cv2.COLOR_RGB2GRAY)
-img_cropped_hsl = cv2.cvtColor(img_cropped, cv2.COLOR_RGB2HLS)
-s_channel = img_cropped_hsl[:, :, 2]
+img_gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+img_hsl = cv2.cvtColor(img, cv2.COLOR_RGB2HLS)
+s_channel = img_hsl[:, :, 2]
 
-grad_x = component_sobel_tresh(img_cropped_gray, orientation="x", kernel_size=KERNEL_SIZE, thresh=(10, 255))
-grad_y = component_sobel_tresh(img_cropped_gray, orientation="y", kernel_size=KERNEL_SIZE, thresh=(60, 255))
-mag_img = magnitude_sobel_thresh(img_cropped_gray, kernel_size=KERNEL_SIZE, thresh=(40, 255))
-dir_img = direction_sobel_thresh(img_cropped_gray, kernel_size=KERNEL_SIZE, thresh=(.65, 1.05))
+grad_x = component_sobel_tresh(img_gray, orientation="x", kernel_size=KERNEL_SIZE, thresh=(10, 255))
+grad_y = component_sobel_tresh(img_gray, orientation="y", kernel_size=KERNEL_SIZE, thresh=(60, 255))
+mag_img = magnitude_sobel_thresh(img_gray, kernel_size=KERNEL_SIZE, thresh=(40, 255))
+dir_img = direction_sobel_thresh(img_gray, kernel_size=KERNEL_SIZE, thresh=(.65, 1.05))
 
 combined_components = cv2.bitwise_and(grad_x, grad_y)
 combined_mag_dir = cv2.bitwise_and(mag_img, dir_img)
@@ -41,7 +40,9 @@ color_binary = cv2.bitwise_or(s_channel_binary, combined_binary)
 
 color_binary[color_binary == 1] = 255
 
+img_cropped = region_cutter.cut_region(color_binary)
+
 # Combined thresholding information
-cv2.imshow("color_binary", color_binary)
+cv2.imshow("img_cropped", img_cropped)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
